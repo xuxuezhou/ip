@@ -1,7 +1,57 @@
-Hello from
- ____        _        
-|  _ \ _   _| | _____ 
-| | | | | | | |/ / _ \
-| |_| | |_| |   <  __/
-|____/ \__,_|_|\_\___|
+      ____.                  .__        
+     |    |____ __________  _|__| ______
+     |    \__  \_  __ \  \/ /  |/  ___/
+ /\__|    |/ __ \|  | \/\   /|  |\___ \ 
+ \________(____  /__|    \_/ |__/____  >
+               \/                    \/ 
 
+_________________________________________
+Hello, sir. I am Jarvis, now with enhanced task management.
+Commands:
+  - 'todo <task>' → Adds a ToDo task
+  - 'deadline <task> /by <date>' → Adds a Deadline task
+  - 'event <task> /from <start> /to <end>' → Adds an Event task
+  - 'mark <number>' → Marks a task as done
+  - 'unmark <number>' → Unmarks a completed task
+  - 'delete <number>' → Deletes a task
+  - 'list' → Shows all tasks
+  - 'bye' → Exits the program
+_________________________________________
+> _________________________________________
+Got it. I've added this task:
+  [T][ ] buy milk
+Now you have 1 tasks in the list.
+_________________________________________
+> _________________________________________
+Got it. I've added this task:
+  [D][ ] return book (by: Sunday)
+Now you have 2 tasks in the list.
+_________________________________________
+> _________________________________________
+Got it. I've added this task:
+  [E][ ] project meeting (from: Mon 2pm to: 4pm)
+Now you have 3 tasks in the list.
+_________________________________________
+> _________________________________________
+Here are your tasks, sir:
+1. [T][ ] buy milk
+2. [D][ ] return book (by: Sunday)
+3. [E][ ] project meeting (from: Mon 2pm to: 4pm)
+_________________________________________
+> _________________________________________
+Nice! I've marked this task as done:
+  [D][X] return book (by: Sunday)
+_________________________________________
+> _________________________________________
+OK, I've marked this task as not done yet:
+  [D][ ] return book (by: Sunday)
+_________________________________________
+> _________________________________________
+Here are your tasks, sir:
+1. [T][ ] buy milk
+2. [D][ ] return book (by: Sunday)
+3. [E][ ] project meeting (from: Mon 2pm to: 4pm)
+_________________________________________
+> _________________________________________
+Sir, I am now shutting down. Until next time.
+_________________________________________
