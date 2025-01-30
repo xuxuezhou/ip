@@ -1,3 +1,5 @@
+package jarvis.task;
+
 public abstract class Task {
     protected String description;
     protected boolean isDone;
@@ -13,10 +15,6 @@ public abstract class Task {
 
     public void markAsNotDone() {
         this.isDone = false;
-    }
-
-    public boolean isDone() {
-        return isDone;
     }
 
     public String getStatusIcon() {
