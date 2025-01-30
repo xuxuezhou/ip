@@ -15,9 +15,15 @@ public class Jarvis {
 
         System.out.println(logo);
         System.out.println("_________________________________________");
-        System.out.println("Hello, sir. I am Jarvis, your personal assistant.");
-        System.out.println("I now support task tracking. You may add tasks, list them, mark them as done, or unmark them.");
-        System.out.println("Use commands: 'list', 'mark <number>', 'unmark <number>', or 'bye' to shut me down.");
+        System.out.println("Hello, sir. I am Jarvis, now with enhanced task management.");
+        System.out.println("Commands:");
+        System.out.println("  - 'todo <task>' → Adds a ToDo task");
+        System.out.println("  - 'deadline <task> /by <date>' → Adds a Deadline task");
+        System.out.println("  - 'event <task> /from <start> /to <end>' → Adds an Event task");
+        System.out.println("  - 'mark <number>' → Marks a task as done");
+        System.out.println("  - 'unmark <number>' → Unmarks a completed task");
+        System.out.println("  - 'list' → Shows all tasks");
+        System.out.println("  - 'bye' → Exits the program");
         System.out.println("_________________________________________");
 
         Scanner scanner = new Scanner(System.in);
@@ -34,27 +40,83 @@ public class Jarvis {
                 break;
             } else if (userInput.equalsIgnoreCase("list")) {
                 displayTasks();
+            } else if (userInput.startsWith("todo ")) {
+                addToDo(userInput.substring(5));
+            } else if (userInput.startsWith("deadline ")) {
+                addDeadline(userInput);
+            } else if (userInput.startsWith("event ")) {
+                addEvent(userInput);
             } else if (userInput.startsWith("mark ")) {
                 markTask(userInput);
             } else if (userInput.startsWith("unmark ")) {
                 unmarkTask(userInput);
             } else {
-                addTask(userInput);
+                System.out.println("Sir, I did not understand that command. Please use 'todo', 'deadline', 'event', 'mark', or 'unmark'.");
             }
         }
 
         scanner.close();
     }
 
-    private static void addTask(String taskDescription) {
-        if (taskCount < MAX_TASKS) {
-            tasks[taskCount] = new Task(taskDescription);
-            taskCount++;
+    private static void addToDo(String taskDescription) {
+        tasks[taskCount++] = new ToDo(taskDescription);
+        printAddedTask();
+    }
+
+    private static void addDeadline(String input) {
+        try {
+            String[] parts = input.split(" /by ", 2);
+            if (parts.length < 2 || parts[1].trim().isEmpty()) {
+                throw new Exception();
+            }
+            String description = parts[0].substring("deadline ".length()).trim();
+            String by = parts[1].trim();
+            tasks[taskCount++] = new Deadline(description, by);
+            printAddedTask();
+        } catch (Exception e) {
+            System.out.println("Sir, please provide a valid deadline format: 'deadline <task> /by <date>'.");
+        }
+    }
+
+    private static void addEvent(String input) {
+        try {
+            String[] parts = input.split(" /from | /to ");
+            if (parts.length < 3 || parts[1].trim().isEmpty() || parts[2].trim().isEmpty()) {
+                throw new Exception();
+            }
+            String description = parts[0].substring("event ".length()).trim();
+            String from = parts[1].trim();
+            String to = parts[2].trim();
+            tasks[taskCount++] = new Event(description, from, to);
+            printAddedTask();
+        } catch (Exception e) {
+            System.out.println("Sir, please provide a valid event format: 'event <task> /from <start> /to <end>'.");
+        }
+    }
+
+    private static void markTask(String command) {
+        try {
+            int taskNumber = Integer.parseInt(command.split(" ")[1]) - 1;
+            tasks[taskNumber].markAsDone();
             System.out.println("_________________________________________");
-            System.out.println("Added: " + taskDescription);
+            System.out.println("Nice! I've marked this task as done:");
+            System.out.println("  " + tasks[taskNumber]);
             System.out.println("_________________________________________");
-        } else {
-            System.out.println("Sir, my memory is at full capacity. I cannot store more tasks.");
+        } catch (Exception e) {
+            System.out.println("Sir, please provide a valid task number for marking.");
+        }
+    }
+
+    private static void unmarkTask(String command) {
+        try {
+            int taskNumber = Integer.parseInt(command.split(" ")[1]) - 1;
+            tasks[taskNumber].markAsNotDone();
+            System.out.println("_________________________________________");
+            System.out.println("OK, I've marked this task as not done yet:");
+            System.out.println("  " + tasks[taskNumber]);
+            System.out.println("_________________________________________");
+        } catch (Exception e) {
+            System.out.println("Sir, please provide a valid task number for unmarking.");
         }
     }
 
@@ -71,37 +133,11 @@ public class Jarvis {
         System.out.println("_________________________________________");
     }
 
-    private static void markTask(String command) {
-        try {
-            int taskNumber = Integer.parseInt(command.split(" ")[1]) - 1;
-            if (taskNumber >= 0 && taskNumber < taskCount) {
-                tasks[taskNumber].markAsDone();
-                System.out.println("_________________________________________");
-                System.out.println("Excellent choice, sir. I've marked this task as done:");
-                System.out.println("  " + tasks[taskNumber]);
-                System.out.println("_________________________________________");
-            } else {
-                System.out.println("Sir, that task does not exist.");
-            }
-        } catch (Exception e) {
-            System.out.println("Sir, please provide a valid task number for marking.");
-        }
-    }
-
-    private static void unmarkTask(String command) {
-        try {
-            int taskNumber = Integer.parseInt(command.split(" ")[1]) - 1;
-            if (taskNumber >= 0 && taskNumber < taskCount) {
-                tasks[taskNumber].markAsNotDone();
-                System.out.println("_________________________________________");
-                System.out.println("Understood, sir. I've marked this task as not done:");
-                System.out.println("  " + tasks[taskNumber]);
-                System.out.println("_________________________________________");
-            } else {
-                System.out.println("Sir, that task does not exist.");
-            }
-        } catch (Exception e) {
-            System.out.println("Sir, please provide a valid task number for unmarking.");
-        }
+    private static void printAddedTask() {
+        System.out.println("_________________________________________");
+        System.out.println("Got it. I've added this task:");
+        System.out.println("  " + tasks[taskCount - 1]);
+        System.out.println("Now you have " + taskCount + " tasks in the list.");
+        System.out.println("_________________________________________");
     }
 }
