@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Jarvis {
     public static void main(String[] args) {
         String logo = "      ____.                  .__        \n"
@@ -11,8 +13,28 @@ public class Jarvis {
         System.out.println("_________________________________________");
         System.out.println("Hello! I'm Jarvis");
         System.out.println("What can I do for you?");
+//        System.out.println("Type 'bye' to exit.");
         System.out.println("_________________________________________");
-        System.out.println("Bye. Hope to see you again soon!");
-        System.out.println("_________________________________________");
+
+        Scanner scanner = new Scanner(System.in);
+        String userInput;
+
+        while (true) {
+            System.out.print("> ");
+            userInput = scanner.nextLine().trim();
+
+            if (userInput.equalsIgnoreCase("bye")) {
+                System.out.println("_________________________________________");
+                System.out.println("Bye. Hope to see you again soon!");
+                System.out.println("_________________________________________");
+                break;
+            } else {
+                System.out.println("_________________________________________");
+                System.out.println(userInput);
+                System.out.println("_________________________________________");
+            }
+        }
+
+        scanner.close();
     }
 }
