@@ -1,0 +1,5 @@
+T | 1 | buy milk
+D | 0 | return book | Sunday
+E | 1 | project meeting | Mon 2pm | 4pm
+T | 0 | complete homework
+D | 1 | submit report | June 6th
