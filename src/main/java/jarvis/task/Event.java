@@ -10,6 +10,14 @@ public class Event extends Task {
         this.to = to;
     }
 
+    public String getFrom() {  // 添加 getter
+        return from;
+    }
+
+    public String getTo() {  // 添加 getter
+        return to;
+    }
+
     @Override
     public String toFileFormat() {
         return "E | " + (isDone ? "1" : "0") + " | " + description + " | " + from + " | " + to;
