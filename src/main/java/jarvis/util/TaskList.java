@@ -33,6 +33,26 @@ public class TaskList {
         System.out.println("Marked as not done: " + tasks.get(index));
     }
 
+    /**
+     * 获取任务列表的大小
+     * @return 任务列表中的任务数量
+     */
+    public int getSize() {
+        return tasks.size();
+    }
+
+    /**
+     * 获取特定索引的任务
+     * @param index 任务在列表中的索引
+     * @return 任务对象
+     */
+    public Task getTask(int index) {
+        if (index < 0 || index >= tasks.size()) {
+            throw new IndexOutOfBoundsException("Invalid task index: " + index);
+        }
+        return tasks.get(index);
+    }
+
     public List<Task> getTasks() {
         return tasks;
     }

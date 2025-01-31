@@ -17,6 +17,11 @@ public abstract class Task {
         this.isDone = false;
     }
 
+    // **添加 get 方法**
+    public boolean isDone() {
+        return isDone;
+    }
+
     public String getStatusIcon() {
         return (isDone ? "X" : " ");
     }

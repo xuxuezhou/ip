@@ -18,4 +18,7 @@ public class AddCommand extends Command {
         System.out.println("Added: " + task);
         storage.save(tasks.getTasks());
     }
+    public Task getTask() {
+        return task;
+    }
 }
