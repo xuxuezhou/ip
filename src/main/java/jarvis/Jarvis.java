@@ -6,11 +6,20 @@ import jarvis.util.Storage;
 import jarvis.util.TaskList;
 import jarvis.util.Ui;
 
+/**
+ * The main class for the Jarvis task assistant application.
+ * It handles user input, executes commands, and manages task storage.
+ */
 public class Jarvis {
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Initializes the Jarvis application.
+     *
+     * @param filePath The file path to store task data.
+     */
     public Jarvis(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -22,6 +31,10 @@ public class Jarvis {
         }
     }
 
+    /**
+     * Runs the main loop of the Jarvis application.
+     * Reads user commands, processes them, and executes the corresponding actions.
+     */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;
@@ -40,6 +53,11 @@ public class Jarvis {
         }
     }
 
+    /**
+     * The main entry point of the Jarvis application.
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         new Jarvis("data/Jarvis.txt").run();
     }

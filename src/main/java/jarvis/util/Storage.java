@@ -8,19 +8,33 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles loading and saving tasks from/to a file.
+ */
 public class Storage {
     private final String filePath;
 
+    /**
+     * Constructs a Storage object.
+     *
+     * @param filePath The file path to store tasks.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Loads tasks from the file.
+     *
+     * @return A list of tasks read from the file.
+     * @throws IOException If there is an error reading the file.
+     */
     public List<Task> load() throws IOException {
         List<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
 
         if (!file.exists()) {
-            return tasks; // 如果文件不存在，返回空列表
+            return tasks; // Return an empty list if the file does not exist.
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -30,13 +44,13 @@ public class Storage {
                 Task task = null;
 
                 switch (parts[0]) {
-                    case "T": // ToDo 任务
+                    case "T":
                         task = new ToDo(parts[2]);
                         break;
-                    case "D": // Deadline 任务
+                    case "D":
                         task = new Deadline(parts[2], parts[3]);
                         break;
-                    case "E": // Event 任务
+                    case "E":
                         task = new Event(parts[2], parts[3], parts[4]);
                         break;
                     default:
@@ -55,6 +69,12 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Saves tasks to the file.
+     *
+     * @param tasks The list of tasks to save.
+     * @throws IOException If there is an error writing to the file.
+     */
     public void save(List<Task> tasks) throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (Task task : tasks) {
