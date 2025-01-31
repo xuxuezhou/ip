@@ -5,7 +5,15 @@ import jarvis.task.ToDo;
 import jarvis.task.Deadline;
 import jarvis.task.Event;
 
+/**
+ * Handles parsing of user commands and returns the appropriate Command.
+ */
 public class Parser {
+    /**
+     * Parses the user input and returns the corresponding Command.
+     * @param userInput The user input string.
+     * @return The corresponding Command.
+     */
     public static Command parse(String userInput) {
         String[] parts = userInput.split(" ", 2);
         String commandWord = parts[0];
@@ -25,6 +33,7 @@ public class Parser {
                 String[] args = parts[1].split(" /from | /to ");
                 yield new AddCommand(new Event(args[0], args[1], args[2]));
             }
+            case "find" -> new FindCommand(parts[1]);
             default -> throw new IllegalArgumentException("Unknown command: " + commandWord);
         };
     }
