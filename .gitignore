@@ -17,3 +17,6 @@ bin/
 text-ui-test/EXPECTED-UNIX.TXT
 data/Jarvis.txt
 text-ui-test/EXPECTED.TXT
+
+*.jar
+/build/
