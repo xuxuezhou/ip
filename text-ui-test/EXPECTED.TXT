@@ -6,7 +6,7 @@
                \/                    \/ 
 
 _________________________________________
-Hello, sir. I am jarvis, now with enhanced task management.
+Hello, sir. I am Jarvis, now with enhanced task management.
 Commands:
   - 'todo <task>' → Adds a ToDo task
   - 'deadline <task> /by <date>' → Adds a Deadline task
