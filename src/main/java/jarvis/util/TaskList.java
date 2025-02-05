@@ -50,6 +50,15 @@ public class TaskList {
     }
 
     /**
+     * Returns the list of tasks.
+     *
+     * @return The list of tasks.
+     */
+    public List<Task> getTasks() {
+        return new ArrayList<>(tasks); // 返回任务列表的副本，防止外部修改内部数据
+    }
+
+    /**
      * Marks a task as done.
      *
      * @param index The index of the task to be marked.

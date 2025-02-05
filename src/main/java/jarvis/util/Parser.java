@@ -4,6 +4,7 @@ import jarvis.command.*;
 import jarvis.task.ToDo;
 import jarvis.task.Deadline;
 import jarvis.task.Event;
+import jarvis.exception.JarvisException;
 
 /**
  * Parses user input and returns corresponding Command objects.
@@ -14,9 +15,10 @@ public class Parser {
      *
      * @param userInput The user input string.
      * @return A Command representing the user's input.
+     * @throws JarvisException If the input is invalid.
      */
-    public static Command parse(String userInput) {
-        String[] parts = userInput.split(" ", 2);
+    public static Command parse(String userInput) throws JarvisException {
+        String[] parts = userInput.trim().split(" ", 2);
         String commandWord = parts[0];
 
         return switch (commandWord) {
@@ -34,22 +36,33 @@ public class Parser {
                 int index = parseIndex(parts);
                 yield new DeleteCommand(index);
             }
-            case "todo" -> new AddCommand(new ToDo(parts[1]));
+            case "todo" -> {
+                if (parts.length < 2 || parts[1].trim().isEmpty()) {
+                    throw new JarvisException("Oops! The description of a todo cannot be empty.");
+                }
+                yield new AddCommand(new ToDo(parts[1]));
+            }
             case "deadline" -> {
+                if (parts.length < 2 || parts[1].trim().isEmpty()) {
+                    throw new JarvisException("Oops! The description of a deadline cannot be empty.");
+                }
                 String[] args = parts[1].split(" /by ", 2);
                 if (args.length < 2) {
-                    throw new IllegalArgumentException("Invalid deadline format. Expected: deadline <description> /by <date>");
+                    throw new JarvisException("Invalid deadline format. Use: deadline <description> /by <date>");
                 }
                 yield new AddCommand(new Deadline(args[0], args[1]));
             }
             case "event" -> {
+                if (parts.length < 2 || parts[1].trim().isEmpty()) {
+                    throw new JarvisException("Oops! The description of an event cannot be empty.");
+                }
                 String[] args = parts[1].split(" /from | /to ", 3);
                 if (args.length < 3) {
-                    throw new IllegalArgumentException("Invalid event format. Expected: event <description> /from <start> /to <end>");
+                    throw new JarvisException("Invalid event format. Use: event <description> /from <start> /to <end>");
                 }
                 yield new AddCommand(new Event(args[0], args[1], args[2]));
             }
-            default -> throw new IllegalArgumentException("Unknown command: " + commandWord);
+            default -> throw new JarvisException("I'm sorry, but I don't recognize this command: " + commandWord);
         };
     }
 
@@ -58,16 +71,16 @@ public class Parser {
      *
      * @param parts The split command parts.
      * @return The parsed index.
-     * @throws IllegalArgumentException If the index is missing or invalid.
+     * @throws JarvisException If the index is missing or invalid.
      */
-    private static int parseIndex(String[] parts) {
+    private static int parseIndex(String[] parts) throws JarvisException {
         if (parts.length < 2) {
-            throw new IllegalArgumentException("Missing index for command.");
+            throw new JarvisException("Oops! Please provide an index for this command.");
         }
         try {
             return Integer.parseInt(parts[1]) - 1;
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid number format for index.");
+            throw new JarvisException("Oops! The index must be a valid number.");
         }
     }
 }
