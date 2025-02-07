@@ -1,10 +1,10 @@
 package jarvis.command;
 
+import jarvis.task.Task; // Fix import order: jarvis.task.Task should come before jarvis.util.*
 import jarvis.util.Storage;
 import jarvis.util.TaskList;
 import jarvis.util.Ui;
-import jarvis.task.Task;
-import java.util.List;
+import java.util.List; // Fix import order: Standard Java packages should come first
 import java.util.stream.Collectors;
 
 /**
@@ -15,6 +15,7 @@ public class FindCommand extends Command {
 
     /**
      * Constructs a FindCommand with a keyword.
+     *
      * @param keyword The search keyword.
      */
     public FindCommand(String keyword) {
@@ -23,6 +24,7 @@ public class FindCommand extends Command {
 
     /**
      * Executes the find command by searching for matching tasks in the TaskList.
+     *
      * @param tasks   The TaskList containing all tasks.
      * @param ui      The Ui for displaying messages.
      * @param storage The Storage for saving data (not used in this command).
