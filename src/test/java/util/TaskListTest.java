@@ -1,10 +1,12 @@
 package jarvis.util;
 
 import jarvis.task.ToDo;
-import jarvis.task.Task;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TaskListTest {
     private TaskList taskList;
@@ -49,8 +51,6 @@ class TaskListTest {
 
     @Test
     void getTask_shouldThrowExceptionForInvalidIndex() {
-        assertThrows(IndexOutOfBoundsException.class, () -> {
-            taskList.getTask(0);
-        });
+        assertThrows(IndexOutOfBoundsException.class, () -> taskList.getTask(0));
     }
 }

@@ -1,17 +1,22 @@
 package jarvis.util;
 
-import jarvis.task.Task;
-import jarvis.task.ToDo;
-import jarvis.task.Deadline;
-import jarvis.task.Event;
-import org.junit.jupiter.api.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import jarvis.task.Deadline;
+import jarvis.task.Event;
+import jarvis.task.Task;
+import jarvis.task.ToDo;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StorageTest {
     private static final String TEST_FILE = "test_tasks.txt";
@@ -24,7 +29,6 @@ class StorageTest {
 
     @AfterEach
     void tearDown() {
-        // 删除测试文件，确保每次运行测试都是独立的
         File file = new File(TEST_FILE);
         if (file.exists()) {
             file.delete();
@@ -39,23 +43,16 @@ class StorageTest {
 
     @Test
     void saveAndLoad_shouldPreserveTaskList() throws IOException {
-        // 准备任务列表
         List<Task> tasks = List.of(
                 new ToDo("Buy groceries"),
                 new Deadline("Submit report", "2024-02-01"),
                 new Event("Team meeting", "10:00", "12:00")
         );
 
-        // 保存任务
         storage.save(tasks);
-
-        // 重新加载
         List<Task> loadedTasks = storage.load();
 
-        // 确保任务数匹配
         assertEquals(3, loadedTasks.size(), "Task list size should be preserved");
-
-        // 确保任务内容一致
         assertEquals("Buy groceries", loadedTasks.get(0).getDescription());
         assertEquals("Submit report", loadedTasks.get(1).getDescription());
         assertEquals("2024-02-01", ((Deadline) loadedTasks.get(1)).getBy());
