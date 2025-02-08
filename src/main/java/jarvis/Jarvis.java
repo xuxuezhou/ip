@@ -44,7 +44,6 @@ public class Jarvis {
         }
     }
 
-
     /**
      * Runs the main loop for the Jarvis task manager.
      */

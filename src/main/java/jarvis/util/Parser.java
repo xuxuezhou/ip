@@ -62,6 +62,13 @@ public class Parser {
                 }
                 yield new AddCommand(new Event(args[0], args[1], args[2]));
             }
+            case "PSY" -> {
+                if (parts.length < 2 || parts[1].trim().isEmpty()) {
+                    throw new JarvisException("Oops! Please provide a message to send to ChatGPT.");
+                }
+                yield new GPTCommand(parts[1], new ChatGPTService());
+            }
+
             default -> throw new JarvisException("I'm sorry, but I don't recognize this command: " + commandWord);
         };
     }
