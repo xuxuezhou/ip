@@ -27,7 +27,13 @@ public class AddCommand extends Command {
         return "Added: " + task;
     }
 
+    /**
+     * Retrieves the task associated with this command.
+     *
+     * @return The task to be added.
+     */
     public Task getTask() {
         return task;
     }
+
 }

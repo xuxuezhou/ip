@@ -70,7 +70,7 @@ public class Parser {
      * Parses an index from the input command.
      *
      * @param parts The split command parts.
-     * @return The parsed index.
+     * @return The parsed index (0-based).
      * @throws JarvisException If the index is missing or invalid.
      */
     private static int parseIndex(String[] parts) throws JarvisException {
@@ -83,4 +83,5 @@ public class Parser {
             throw new JarvisException("Oops! The index must be a valid number.");
         }
     }
+
 }

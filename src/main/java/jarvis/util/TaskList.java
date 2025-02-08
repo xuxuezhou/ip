@@ -90,10 +90,11 @@ public class TaskList {
     }
 
     /**
-     * Gets a specific task from the list.
+     * Retrieves a specific task from the list.
      *
-     * @param index The index of the task.
+     * @param index The index of the task (0-based).
      * @return The task at the given index.
+     * @throws IndexOutOfBoundsException If the index is invalid.
      */
     public Task getTask(int index) {
         validateIndex(index);
