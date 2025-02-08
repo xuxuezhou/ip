@@ -30,6 +30,21 @@ public class Jarvis {
         }
     }
 
+    public Jarvis() {
+        ui = new Ui();
+        tasks = new TaskList();
+    }
+
+    public String getResponse(String input) {
+        try {
+            Command command = Parser.parse(input);
+            return command.execute(tasks, ui, storage);
+        } catch (Exception e) {
+            return "Error: " + e.getMessage();
+        }
+    }
+
+
     /**
      * Runs the main loop for the Jarvis task manager.
      */

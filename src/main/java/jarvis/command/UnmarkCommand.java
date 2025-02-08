@@ -28,8 +28,9 @@ public class UnmarkCommand extends Command {
      * @throws Exception If an error occurs while saving.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws Exception {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws Exception {
         tasks.unmarkTask(index);
         storage.save(tasks.getTasks());
+        return "Task unmarked: " + tasks.getTasks().get(index);
     }
 }

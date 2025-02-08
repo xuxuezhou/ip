@@ -28,8 +28,9 @@ public class MarkCommand extends Command {
      * @throws Exception If an error occurs while saving.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws Exception {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws Exception {
         tasks.markTask(index);
         storage.save(tasks.getTasks());
+        return "Task marked as done: " + tasks.getTasks().get(index);
     }
 }

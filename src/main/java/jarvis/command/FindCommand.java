@@ -30,18 +30,19 @@ public class FindCommand extends Command {
      * @param storage The Storage for saving data (not used in this command).
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
         List<Task> matchingTasks = tasks.getTasks().stream()
                 .filter(task -> task.getDescription().contains(keyword))
                 .collect(Collectors.toList());
 
         if (matchingTasks.isEmpty()) {
-            System.out.println("No matching tasks found.");
+            return "No matching tasks found.";
         } else {
-            System.out.println("Here are the matching tasks in your list:");
+            StringBuilder result = new StringBuilder("Here are the matching tasks in your list:\n");
             for (int i = 0; i < matchingTasks.size(); i++) {
-                System.out.println((i + 1) + ". " + matchingTasks.get(i));
+                result.append((i + 1)).append(". ").append(matchingTasks.get(i)).append("\n");
             }
+            return result.toString().trim();
         }
     }
 }
