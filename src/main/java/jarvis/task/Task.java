@@ -32,15 +32,6 @@ public abstract class Task {
     }
 
     /**
-     * Checks if the task is completed.
-     *
-     * @return true if the task is completed, false otherwise.
-     */
-    public boolean isDone() {
-        return isDone;
-    }
-
-    /**
      * Gets the status icon of the task.
      *
      * @return "X" if the task is completed, otherwise a space.
@@ -65,11 +56,6 @@ public abstract class Task {
      */
     public abstract String toFileFormat();
 
-    /**
-     * Returns a string representation of the task.
-     *
-     * @return A formatted string with task details.
-     */
     @Override
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;

@@ -10,6 +10,7 @@ import jarvis.task.Task;
  */
 public class AddCommand extends Command {
     private static final String MESSAGE_ADDED = "Added: ";
+    private static final String MESSAGE_DUPLICATE = "Task already exists: ";
     private final Task task;
 
     /**
@@ -23,8 +24,10 @@ public class AddCommand extends Command {
 
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws Exception {
-        tasks.addTask(task);
-        storage.save(tasks.getTasks());
+        if (!tasks.addTask(task)) {
+            return MESSAGE_DUPLICATE + task;
+        }
+        storage.save(tasks.getTasks()); // Save only if new task was added
         return MESSAGE_ADDED + task;
     }
 

@@ -6,7 +6,9 @@ import jarvis.task.Deadline;
 import jarvis.task.Event;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Handles loading and saving tasks from/to a file.
@@ -24,17 +26,18 @@ public class Storage {
     }
 
     /**
-     * Loads tasks from the file.
+     * Loads tasks from the file while ensuring no duplicates.
      *
-     * @return A list of tasks read from the file.
+     * @return A list of unique tasks read from the file.
      * @throws IOException If there is an error reading the file.
      */
     public List<Task> load() throws IOException {
         List<Task> tasks = new ArrayList<>();
+        Set<String> taskSet = new HashSet<>();
         File file = new File(filePath);
 
         if (!file.exists()) {
-            return tasks; // Return an empty list if the file does not exist.
+            return tasks;
         }
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
@@ -53,16 +56,14 @@ public class Storage {
                     case "E":
                         task = new Event(parts[2], parts[3], parts[4]);
                         break;
-                    default:
-                        System.out.println("Warning: Unknown task type found in file.");
                 }
 
-                if (task != null && parts[1].equals("1")) {
-                    task.markAsDone();
-                }
-
-                if (task != null) {
+                if (task != null && !taskSet.contains(task.getDescription())) {
+                    if (parts[1].equals("1")) {
+                        task.markAsDone();
+                    }
                     tasks.add(task);
+                    taskSet.add(task.getDescription());
                 }
             }
         }

@@ -2,19 +2,23 @@ package jarvis.util;
 
 import jarvis.task.Task;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Represents a list of tasks and provides methods for managing them.
  */
 public class TaskList {
     private final List<Task> tasks;
+    private final Set<String> taskSet; // Track unique task descriptions
 
     /**
      * Initializes an empty TaskList.
      */
     public TaskList() {
         this.tasks = new ArrayList<>();
+        this.taskSet = new HashSet<>();
     }
 
     /**
@@ -24,15 +28,25 @@ public class TaskList {
      */
     public TaskList(List<Task> tasks) {
         this.tasks = new ArrayList<>(tasks);
+        this.taskSet = new HashSet<>();
+        for (Task task : tasks) {
+            taskSet.add(task.getDescription());
+        }
     }
 
     /**
-     * Adds a task to the task list.
+     * Adds a task to the list only if it does not already exist.
      *
      * @param task The task to be added.
+     * @return true if the task was added, false if it was a duplicate.
      */
-    public void addTask(Task task) {
+    public boolean addTask(Task task) {
+        if (taskSet.contains(task.getDescription())) {
+            return false; // Task already exists
+        }
         tasks.add(task);
+        taskSet.add(task.getDescription());
+        return true;
     }
 
     /**
@@ -43,30 +57,20 @@ public class TaskList {
      * @throws IndexOutOfBoundsException If the index is invalid.
      */
     public Task deleteTask(int index) {
-        if (index < 0 || index >= tasks.size()) {
-            throw new IndexOutOfBoundsException("Invalid task index: " + index);
-        }
-        return tasks.remove(index);
-    }
-
-    /**
-     * Returns the list of tasks.
-     *
-     * @return The list of tasks.
-     */
-    public List<Task> getTasks() {
-        return new ArrayList<>(tasks); // 返回任务列表的副本，防止外部修改内部数据
+        validateIndex(index);
+        Task removedTask = tasks.remove(index);
+        taskSet.remove(removedTask.getDescription());
+        return removedTask;
     }
 
     /**
      * Marks a task as done.
      *
-     * @param index The index of the task to be marked.
+     * @param index The index of the task to be marked as done.
      */
     public void markTask(int index) {
         validateIndex(index);
         tasks.get(index).markAsDone();
-        System.out.println("Marked as done: " + tasks.get(index));
     }
 
     /**
@@ -77,16 +81,6 @@ public class TaskList {
     public void unmarkTask(int index) {
         validateIndex(index);
         tasks.get(index).markAsNotDone();
-        System.out.println("Marked as not done: " + tasks.get(index));
-    }
-
-    /**
-     * Gets the number of tasks in the list.
-     *
-     * @return The number of tasks.
-     */
-    public int getSize() {
-        return tasks.size();
     }
 
     /**
@@ -102,6 +96,24 @@ public class TaskList {
     }
 
     /**
+     * Gets the number of tasks in the list.
+     *
+     * @return The number of tasks.
+     */
+    public int getSize() {
+        return tasks.size();
+    }
+
+    /**
+     * Returns a copy of the current task list.
+     *
+     * @return A list of all tasks.
+     */
+    public List<Task> getTasks() {
+        return new ArrayList<>(tasks); // Return a copy to prevent modification from outside
+    }
+
+    /**
      * Validates whether the given index is within bounds.
      *
      * @param index The index to check.
@@ -114,15 +126,10 @@ public class TaskList {
     }
 
     /**
-     * Prints the list of tasks.
+     * Returns a formatted string representation of the task list.
+     *
+     * @return A string representation of the task list.
      */
-    public void printTasks() {
-        System.out.println("Here are your tasks:");
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + ". " + tasks.get(i));
-        }
-    }
-
     @Override
     public String toString() {
         if (tasks.isEmpty()) {
@@ -135,5 +142,4 @@ public class TaskList {
         }
         return sb.toString().trim();
     }
-
 }
