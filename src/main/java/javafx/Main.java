@@ -1,7 +1,7 @@
+package javafx;
+
 import jarvis.Jarvis;
 import java.io.IOException;
-
-import javafx.MainWindow;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -9,11 +9,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
- * A GUI for Duke using FXML.
+ * The main entry point for the JavaFX application.
  */
 public class Main extends Application {
-
-    private Jarvis jarvis = new Jarvis();
+    private Jarvis jarvis = new Jarvis("text-ui-test/input.txt");
 
     @Override
     public void start(Stage stage) {
@@ -22,7 +21,11 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
-            fxmlLoader.<MainWindow>getController().setJarvis(jarvis);  // inject the Duke instance
+
+            MainWindow mainWindow = fxmlLoader.getController();
+            mainWindow.setStage(stage); // Pass the stage instance
+
+            mainWindow.setJarvis(jarvis); // Inject the Jarvis instance
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

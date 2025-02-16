@@ -1,10 +1,13 @@
 package jarvis;
 
+import javafx.application.Platform;
+import javafx.stage.Stage;
 import jarvis.command.Command;
 import jarvis.util.Parser;
 import jarvis.util.Storage;
 import jarvis.util.TaskList;
 import jarvis.util.Ui;
+import javafx.MainWindow;
 
 /**
  * The main class for the Jarvis task manager.
@@ -35,41 +38,29 @@ public class Jarvis {
         tasks = new TaskList();
     }
 
+    /**
+     * Processes user input and returns Jarvis's response.
+     * If "bye" is entered, the application will clear the chat and exit.
+     *
+     * @param input The user input command.
+     * @return The response from Jarvis.
+     */
     public String getResponse(String input) {
+        if (input.equalsIgnoreCase("bye")) {
+            Platform.runLater(() -> {
+                MainWindow.clearDialogContainer(); // Clear chat window
+                Stage stage = MainWindow.getStage();
+                if (stage != null) {
+                    stage.close(); // Exit JavaFX application
+                }
+            });
+            return "Bye! See you again!";
+        }
         try {
             Command command = Parser.parse(input);
             return command.execute(tasks, ui, storage);
         } catch (Exception e) {
             return "Error: " + e.getMessage();
         }
-    }
-
-
-    /**
-     * Runs the main loop for the Jarvis task manager.
-     */
-    public void run() {
-        ui.showWelcome();
-        boolean isExit = false;
-        while (!isExit) {
-            try {
-                String fullCommand = ui.readCommand();
-                Command c = Parser.parse(fullCommand);
-                c.execute(tasks, ui, storage);
-                isExit = c.isExit();
-            } catch (Exception e) {
-                ui.showError(e.getMessage());
-            }
-            ui.showLine();
-        }
-    }
-
-    /**
-     * The main entry point for the Jarvis application.
-     *
-     * @param args Command-line arguments.
-     */
-    public static void main(String[] args) {
-        new Jarvis("data/Jarvis.txt").run();
     }
 }
