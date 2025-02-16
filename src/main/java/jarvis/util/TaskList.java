@@ -121,4 +121,18 @@ public class TaskList {
             System.out.println((i + 1) + ". " + tasks.get(i));
         }
     }
+
+    @Override
+    public String toString() {
+        if (tasks.isEmpty()) {
+            return "Your task list is empty.";
+        }
+
+        StringBuilder sb = new StringBuilder("Here are your tasks:\n");
+        for (int i = 0; i < tasks.size(); i++) {
+            sb.append(i + 1).append(". ").append(tasks.get(i)).append("\n");
+        }
+        return sb.toString().trim();
+    }
+
 }

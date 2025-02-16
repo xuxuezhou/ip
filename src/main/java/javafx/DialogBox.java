@@ -35,9 +35,10 @@ public class DialogBox extends HBox {
         }
 
         dialog.setText(text);
+        dialog.setWrapText(true);
+        dialog.setMaxWidth(350);
         displayPicture.setImage(img);
 
-        // 默认用户消息靠右
         setAlignment(Pos.TOP_RIGHT);
     }
 
@@ -57,7 +58,7 @@ public class DialogBox extends HBox {
      */
     public static DialogBox getJarvisDialog(String text, Image img) {
         DialogBox db = new DialogBox(text, img);
-        db.flip();  // 让 Jarvis 在左边
+        db.flip();
         return db;
     }
 
@@ -65,6 +66,6 @@ public class DialogBox extends HBox {
      * Creates a dialog box for the user, aligned to the right.
      */
     public static DialogBox getUserDialog(String text, Image img) {
-        return new DialogBox(text, img);  // 用户默认靠右
+        return new DialogBox(text, img);
     }
 }
