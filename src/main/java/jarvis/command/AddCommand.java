@@ -9,6 +9,7 @@ import jarvis.task.Task;
  * Represents a command to add a task to the task list.
  */
 public class AddCommand extends Command {
+    private static final String MESSAGE_ADDED = "Added: ";
     private final Task task;
 
     /**
@@ -24,7 +25,7 @@ public class AddCommand extends Command {
     public String execute(TaskList tasks, Ui ui, Storage storage) throws Exception {
         tasks.addTask(task);
         storage.save(tasks.getTasks());
-        return "Added: " + task;
+        return MESSAGE_ADDED + task;
     }
 
     /**
@@ -35,5 +36,4 @@ public class AddCommand extends Command {
     public Task getTask() {
         return task;
     }
-
 }

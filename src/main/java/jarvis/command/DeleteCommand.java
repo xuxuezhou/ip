@@ -1,14 +1,16 @@
 package jarvis.command;
 
-import jarvis.task.Task;
 import jarvis.util.Storage;
 import jarvis.util.TaskList;
 import jarvis.util.Ui;
+import jarvis.task.Task;
 
 /**
  * Represents a command to delete a task from the task list.
  */
 public class DeleteCommand extends Command {
+    private static final String MESSAGE_INVALID_INDEX = "Invalid task number.";
+    private static final String MESSAGE_REMOVED = "Removed: ";
     private final int index;
 
     /**
@@ -22,12 +24,19 @@ public class DeleteCommand extends Command {
 
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws Exception {
-        if (index < 0 || index >= tasks.getTasks().size()) {
-            return "Invalid task number.";
+        if (!isValidIndex(index, tasks)) {
+            return MESSAGE_INVALID_INDEX;
         }
-        Task removedTask = tasks.getTasks().get(index);
+        Task removedTask = tasks.getTask(index);
         tasks.deleteTask(index);
         storage.save(tasks.getTasks());
-        return "Removed: " + removedTask;
+        return MESSAGE_REMOVED + removedTask;
+    }
+
+    /**
+     * Validates whether the given index is within valid range.
+     */
+    private boolean isValidIndex(int index, TaskList tasks) {
+        return index >= 0 && index < tasks.getSize();
     }
 }
