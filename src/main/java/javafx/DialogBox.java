@@ -1,3 +1,4 @@
+// DialogBox.java
 package javafx;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
 
 /**
  * Represents a dialog box consisting of an ImageView to represent the speaker's face
@@ -38,14 +40,11 @@ public class DialogBox extends HBox {
         dialog.setWrapText(true);
         dialog.setMaxWidth(350);
         displayPicture.setImage(img);
+        displayPicture.setClip(new Circle(45, 45, 45)); // Make image circular
 
         setAlignment(Pos.TOP_RIGHT);
     }
 
-    /**
-     * Flips the dialog box such that the ImageView is on the left and text on the right.
-     * This is used for Jarvis messages.
-     */
     private void flip() {
         ObservableList<Node> tmp = FXCollections.observableArrayList(this.getChildren());
         Collections.reverse(tmp);
@@ -53,18 +52,12 @@ public class DialogBox extends HBox {
         setAlignment(Pos.TOP_LEFT);
     }
 
-    /**
-     * Creates a dialog box for Jarvis (Bot), aligned to the left.
-     */
     public static DialogBox getJarvisDialog(String text, Image img) {
         DialogBox db = new DialogBox(text, img);
         db.flip();
         return db;
     }
 
-    /**
-     * Creates a dialog box for the user, aligned to the right.
-     */
     public static DialogBox getUserDialog(String text, Image img) {
         return new DialogBox(text, img);
     }
