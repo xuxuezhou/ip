@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 
@@ -8,7 +8,11 @@
          xmlns="http://javafx.com/javafx/17"
          xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <Label fx:id="dialog" text="Label" wrapText="true" />
+        <TextArea fx:id="dialog" text="Response"
+                  wrapText="true"
+                  editable="false"
+                  prefWidth="350"
+                  prefHeight="100"/>
         <ImageView fx:id="displayPicture" fitHeight="99.0" fitWidth="99.0"
                    pickOnBounds="true" preserveRatio="true"/>
     </children>

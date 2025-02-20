@@ -100,7 +100,11 @@ Ensure your command format follows the correct structure.
 
 ## Talk to AI!
 Jarvis supports the feature to GPT.
+- Command: `syjj!`
+- Expected outcome: `Yes I'm here. How are you?`
 
+## Run the Jar file
+- Command: `java -jar Jarvis.jar --api-key sk-xxx`
 ## Notes
 - Commands are case-sensitive, but parameters are case-insensitive.
 - Ensure correct spacing and command structure to avoid errors.

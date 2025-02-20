@@ -8,6 +8,7 @@ import jarvis.util.Parser;
 import jarvis.util.Storage;
 import jarvis.util.TaskList;
 import jarvis.util.Ui;
+import jarvis.util.ChatGPTService;
 import javafx.MainWindow;
 
 /**
@@ -17,6 +18,8 @@ public class Jarvis {
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
+    private boolean useGPT = false; // Flag to enable GPT responses
+    private ChatGPTService gptService;
 
     /**
      * Constructs a Jarvis instance with the given file path for storage.
@@ -26,6 +29,7 @@ public class Jarvis {
     public Jarvis(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
+        gptService = new ChatGPTService(); // Initialize GPT service
         try {
             tasks = new TaskList(storage.load());
         } catch (Exception e) {
@@ -40,6 +44,7 @@ public class Jarvis {
     public Jarvis() {
         ui = new Ui();
         tasks = new TaskList();
+        gptService = new ChatGPTService();
     }
 
     /**
@@ -50,6 +55,17 @@ public class Jarvis {
      * @return The response from Jarvis.
      */
     public String getResponse(String input) {
+        // Enable GPT mode if user inputs "PSY"
+        if (input.equalsIgnoreCase("chatGPT")) {
+            useGPT = true;
+            return "The conversation will be handled by AI from now...";
+        }
+
+        // If GPT mode is enabled, forward input to ChatGPTService
+        if (useGPT) {
+            return gptService.chatWithGPT(input);
+        }
+
         // If the user types "bye", exit the application.
         if (input.equalsIgnoreCase("bye")) {
             Platform.runLater(() -> {
@@ -67,7 +83,6 @@ public class Jarvis {
         try {
             hardcodedResponse = Parser.parse(input);
         } catch (JarvisException e) {
-            // Return an error message if a JarvisException is thrown.
             return "Error: " + e.getMessage();
         }
         if (hardcodedResponse != null) {
@@ -77,9 +92,28 @@ public class Jarvis {
         // If no hardcoded response, proceed with normal command parsing.
         try {
             Command command = Parser.parseCommand(input);
-            return command.execute(tasks, ui, storage); // This may throw an exception
+            return command.execute(tasks, ui, storage);
         } catch (Exception e) {
             return "Error: " + e.getMessage();
+        }
+    }
+
+    /**
+     * Runs the main loop for the Jarvis task manager.
+     */
+    public void run() {
+        ui.showWelcome();
+        boolean isExit = false;
+        while (!isExit) {
+            try {
+                String fullCommand = ui.readCommand();
+                Command c = Parser.parseCommand(fullCommand);
+                c.execute(tasks, ui, storage);
+                isExit = c.isExit();
+            } catch (Exception e) {
+                ui.showError(e.getMessage());
+            }
+            ui.showLine();
         }
     }
 }

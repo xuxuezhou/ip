@@ -31,6 +31,10 @@ dependencies {
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'win'
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'mac'
     implementation group: 'org.openjfx', name: 'javafx-graphics', version: javaFxVersion, classifier: 'linux'
+
+    implementation 'com.theokanning.openai-gpt3-java:api:0.12.0'
+    implementation 'com.theokanning.openai-gpt3-java:service:0.12.0'
+
 }
 
 test {

@@ -33,8 +33,8 @@ public class MainWindow extends AnchorPane {
 
     private Jarvis jarvis;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/panda.jpg"));
-    private Image jarvisImage = new Image(this.getClass().getResourceAsStream("/images/beauty.jpg"));
+    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/jarvisImage.jpg"));
+    private Image jarvisImage = new Image(this.getClass().getResourceAsStream("/images/userImage.jpg"));
 
     @FXML
     public void initialize() {
@@ -44,7 +44,7 @@ public class MainWindow extends AnchorPane {
         dialogContainer.prefHeightProperty().bind(scrollPane.heightProperty().subtract(20));
 
 //        String welcomeMessage = "Hello! I'm Jarvis.\nHow can I assist you today?";
-        String welcomeMessage = "Hello! I'm Shiyu.\nI'm a physicist.\nLet's discuss astronomy!";
+        String welcomeMessage = "Hello! I'm Jarvis.\nHow can I help you?";
         dialogContainer.getChildren().add(DialogBox.getJarvisDialog(welcomeMessage, jarvisImage));
     }
 
