@@ -43,7 +43,8 @@ public class MainWindow extends AnchorPane {
         dialogContainer.prefWidthProperty().bind(scrollPane.widthProperty().subtract(20));
         dialogContainer.prefHeightProperty().bind(scrollPane.heightProperty().subtract(20));
 
-        String welcomeMessage = "Hello! I'm Jarvis.\nHow can I assist you today?";
+//        String welcomeMessage = "Hello! I'm Jarvis.\nHow can I assist you today?";
+        String welcomeMessage = "Hello! I'm Shiyu.\nI'm a physicist.\nLet's discuss astronomy!";
         dialogContainer.getChildren().add(DialogBox.getJarvisDialog(welcomeMessage, jarvisImage));
     }
 

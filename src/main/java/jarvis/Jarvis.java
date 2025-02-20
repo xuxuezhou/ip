@@ -1,5 +1,6 @@
 package jarvis;
 
+import jarvis.exception.JarvisException;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import jarvis.command.Command;
@@ -33,6 +34,9 @@ public class Jarvis {
         }
     }
 
+    /**
+     * Constructs a Jarvis instance without specifying a file path.
+     */
     public Jarvis() {
         ui = new Ui();
         tasks = new TaskList();
@@ -46,6 +50,7 @@ public class Jarvis {
      * @return The response from Jarvis.
      */
     public String getResponse(String input) {
+        // If the user types "bye", exit the application.
         if (input.equalsIgnoreCase("bye")) {
             Platform.runLater(() -> {
                 MainWindow.clearDialogContainer(); // Clear chat window
@@ -56,9 +61,23 @@ public class Jarvis {
             });
             return "Bye! See you again!";
         }
+
+        // Attempt to get a hardcoded response by parsing the input.
+        String hardcodedResponse = null;
         try {
-            Command command = Parser.parse(input);
-            return command.execute(tasks, ui, storage);
+            hardcodedResponse = Parser.parse(input);
+        } catch (JarvisException e) {
+            // Return an error message if a JarvisException is thrown.
+            return "Error: " + e.getMessage();
+        }
+        if (hardcodedResponse != null) {
+            return hardcodedResponse;
+        }
+
+        // If no hardcoded response, proceed with normal command parsing.
+        try {
+            Command command = Parser.parseCommand(input);
+            return command.execute(tasks, ui, storage); // This may throw an exception
         } catch (Exception e) {
             return "Error: " + e.getMessage();
         }
