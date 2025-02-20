@@ -36,6 +36,7 @@ public class Storage {
         Set<String> taskSet = new HashSet<>();
         File file = new File(filePath);
 
+        // 如果文件不存在，直接返回空列表，不创建新文件
         if (!file.exists()) {
             return tasks;
         }
@@ -77,7 +78,14 @@ public class Storage {
      * @throws IOException If there is an error writing to the file.
      */
     public void save(List<Task> tasks) throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
+        File file = new File(filePath);
+
+        // 仅当文件已存在时才执行写入
+        if (!file.exists()) {
+            return;
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (Task task : tasks) {
                 writer.write(task.toFileFormat() + "\n");
             }

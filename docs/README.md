@@ -21,27 +21,21 @@ Jarvis supports a variety of commands for managing tasks and retrieving predefin
 - Example: `todo Read book`
 - Expected outcome:
 ```angular2html
-Got it. I've added this task:
-[T][ ] Read book
-Now you have X tasks in the list.
+Added: [T][ ] Read book
 ```
 #### Adding a Deadline
 - Command format: `deadline <description> /by <data/time>`
 - Example: `deadline Finish report /by Monday`
 - Expected outcome:
 ```angular2html
-Got it. I've added this task:
-[D][ ] Finish report (by: Monday)
-Now you have X tasks in the list.
+Added: [D][ ] Finish report (by: Monday)
 ```
 #### Adding an Event
 - Command format: `event <description> /from <start> /to <end>`
 - Example: `event Team meeting /from 2pm /to 4pm`
 - Expected outcome:
 ```angular2html
-Got it. I've added this task:
-[E][ ] Team meeting (from: 2pm to: 4pm)
-Now you have X tasks in the list.
+Added: [E][ ] Team meeting (from: 2pm to: 4pm)
 ```
 
 #### Listing All Tasks
@@ -53,40 +47,26 @@ Now you have X tasks in the list.
 - Example: `mark 2`
 - Expected outcome:
 ```angular2html
-Nice! I've marked this task as done:
-[T][X] Read book
+Task marked as done: [T][X] Read book
 ```
 #### Unmarking a Task
 - Command format: `unmark <task index>`
 - Example: `unmark 2`
 - Expected outcome:
 ```angular2html
-OK, I've marked this task as not done yet:
-[T][ ] Read book
+Task unmarked: [T][ ] Read book
 ```
 #### Deleting a Task
 - Command format: `delete <task index>`
 - Example: `delete 1`
 - Expected outcome:
 ```angular2html
-Noted. I've removed this task:
-[T][ ] Read book
-Now you have X tasks in the list.
+Removed: [T][ ] Read book
 ```
 ### Predefined Responses
 Jarvis can respond to certain hardcoded questions.
 #### General Conversations
 - Example: `hello` -> `hi!`
-- Example: `what's your favorite food?` -> `Matcha!`
-- Example: `who is your best friend?` -> `It's you! Xiongmao.`
-- Example: `what's your research interest?` -> `I'm interested in magnetic fields!`
-
-#### Physics & Astronomy Questions
-- Example: `could you explain maxwell's equation for me?` -> `Sure. Maxwell's equations are four fundamental equations that describe classical electromagnetism.
-They explain how electric and magnetic fields interact with each other and with charges and currents.
-These equations unify electricity, magnetism, and optics into a single theory.`
-- Example: `what is the largest planet in our solar system?` -> `Jupiter is the largest planet in our solar system.`
-
 ### Exit the Application
 - Command: `bye`
 - Expected outcome: Terminates the application directly.
@@ -100,11 +80,11 @@ Ensure your command format follows the correct structure.
 
 ## Talk to AI!
 Jarvis supports the feature to GPT.
-- Command: `syjj!`
-- Expected outcome: `Yes I'm here. How are you?`
+- Command: `chatGPT`
+- Expected outcome: `The conversation will be handled by AI from now...`
 
 ## Run the Jar file
-- Command: `java -jar Jarvis.jar --api-key sk-xxx`
+- Command: `java -jar Jarvis.jar`
 ## Notes
 - Commands are case-sensitive, but parameters are case-insensitive.
 - Ensure correct spacing and command structure to avoid errors.
