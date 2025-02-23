@@ -75,12 +75,12 @@ public class Parser {
                 String[] args = parseEvent(parts);
                 yield new AddCommand(new jarvis.task.Event(args[0], args[1], args[2]));
             }
-            case "chatGPT" -> {
-                if (parts.length < 2 || parts[1].trim().isEmpty()) {
-                    throw new JarvisException("Oops! Please provide a message to send to ChatGPT.");
-                }
-                yield new GPTCommand(parts[1], new ChatGPTService());
-            }
+//            case "chatGPT" -> {
+//                if (parts.length < 2 || parts[1].trim().isEmpty()) {
+//                    throw new JarvisException("Oops! Please provide a message to send to ChatGPT.");
+//                }
+//                yield new GPTCommand(parts[1], new ChatGPTService());
+//            }
 
             default -> throw new JarvisException("I'm sorry, but I don't recognize this command: " + commandWord);
         };

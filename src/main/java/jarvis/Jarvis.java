@@ -8,7 +8,7 @@ import jarvis.util.Parser;
 import jarvis.util.Storage;
 import jarvis.util.TaskList;
 import jarvis.util.Ui;
-import jarvis.util.ChatGPTService;
+//import jarvis.util.ChatGPTService;
 import javafx.MainWindow;
 
 /**
@@ -19,7 +19,7 @@ public class Jarvis {
     private TaskList tasks;
     private Ui ui;
     private boolean useGPT = false; // Flag to enable GPT responses
-    private ChatGPTService gptService;
+//    private ChatGPTService gptService;
 
     /**
      * Constructs a Jarvis instance with the given file path for storage.
@@ -29,7 +29,7 @@ public class Jarvis {
     public Jarvis(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
-        gptService = new ChatGPTService(); // Initialize GPT service
+//        gptService = new ChatGPTService(); // Initialize GPT service
         try {
             tasks = new TaskList(storage.load());
         } catch (Exception e) {
@@ -44,7 +44,7 @@ public class Jarvis {
     public Jarvis() {
         ui = new Ui();
         tasks = new TaskList();
-        gptService = new ChatGPTService();
+//        gptService = new ChatGPTService();
     }
 
     /**
@@ -61,10 +61,10 @@ public class Jarvis {
             return "The conversation will be handled by AI from now...";
         }
 
-        // If GPT mode is enabled, forward input to ChatGPTService
-        if (useGPT) {
-            return gptService.chatWithGPT(input);
-        }
+//        // If GPT mode is enabled, forward input to ChatGPTService
+//        if (useGPT) {
+//            return gptService.chatWithGPT(input);
+//        }
 
         // If the user types "bye", exit the application.
         if (input.equalsIgnoreCase("bye")) {
