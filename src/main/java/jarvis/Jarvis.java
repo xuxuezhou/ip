@@ -1,15 +1,13 @@
 package jarvis;
 
-import jarvis.exception.JarvisException;
-import javafx.application.Platform;
-import javafx.stage.Stage;
 import jarvis.command.Command;
 import jarvis.util.Parser;
 import jarvis.util.Storage;
 import jarvis.util.TaskList;
 import jarvis.util.Ui;
-//import jarvis.util.ChatGPTService;
 import javafx.MainWindow;
+import javafx.application.Platform;
+import javafx.stage.Stage;
 
 /**
  * The main class for the Jarvis task manager.
@@ -18,8 +16,6 @@ public class Jarvis {
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
-    private boolean useGPT = false; // Flag to enable GPT responses
-//    private ChatGPTService gptService;
 
     /**
      * Constructs a Jarvis instance with the given file path for storage.
@@ -29,7 +25,6 @@ public class Jarvis {
     public Jarvis(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
-//        gptService = new ChatGPTService(); // Initialize GPT service
         try {
             tasks = new TaskList(storage.load());
         } catch (Exception e) {
@@ -44,53 +39,31 @@ public class Jarvis {
     public Jarvis() {
         ui = new Ui();
         tasks = new TaskList();
-//        gptService = new ChatGPTService();
     }
 
     /**
      * Processes user input and returns Jarvis's response.
-     * If "bye" is entered, the application will clear the chat and exit.
      *
      * @param input The user input command.
      * @return The response from Jarvis.
      */
     public String getResponse(String input) {
-        // Enable GPT mode if user inputs "PSY"
-        if (input.equalsIgnoreCase("chatGPT")) {
-            useGPT = true;
-            return "The conversation will be handled by AI from now...";
-        }
-
-//        // If GPT mode is enabled, forward input to ChatGPTService
-//        if (useGPT) {
-//            return gptService.chatWithGPT(input);
-//        }
-
-        // If the user types "bye", exit the application.
         if (input.equalsIgnoreCase("bye")) {
             Platform.runLater(() -> {
-                MainWindow.clearDialogContainer(); // Clear chat window
+                MainWindow.clearDialogContainer();
                 Stage stage = MainWindow.getStage();
                 if (stage != null) {
-                    stage.close(); // Exit JavaFX application
+                    stage.close();
                 }
             });
             return "Bye! See you again!";
         }
 
-        // Attempt to get a hardcoded response by parsing the input.
-        String hardcodedResponse = null;
         try {
-            hardcodedResponse = Parser.parse(input);
-        } catch (JarvisException e) {
-            return "Error: " + e.getMessage();
-        }
-        if (hardcodedResponse != null) {
-            return hardcodedResponse;
-        }
-
-        // If no hardcoded response, proceed with normal command parsing.
-        try {
+            String hardcodedResponse = Parser.parse(input);
+            if (hardcodedResponse != null) {
+                return hardcodedResponse;
+            }
             Command command = Parser.parseCommand(input);
             return command.execute(tasks, ui, storage);
         } catch (Exception e) {

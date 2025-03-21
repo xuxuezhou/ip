@@ -1,9 +1,9 @@
 package jarvis.command;
 
+import jarvis.task.Task;
 import jarvis.util.Storage;
 import jarvis.util.TaskList;
 import jarvis.util.Ui;
-import jarvis.task.Task;
 
 /**
  * Represents a command to delete a task from the task list.

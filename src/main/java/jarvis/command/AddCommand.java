@@ -1,9 +1,9 @@
 package jarvis.command;
 
+import jarvis.task.Task;
 import jarvis.util.Storage;
 import jarvis.util.TaskList;
 import jarvis.util.Ui;
-import jarvis.task.Task;
 
 /**
  * Represents a command to add a task to the task list.
@@ -27,7 +27,7 @@ public class AddCommand extends Command {
         if (!tasks.addTask(task)) {
             return MESSAGE_DUPLICATE + task;
         }
-        storage.save(tasks.getTasks()); // Save only if new task was added
+        storage.save(tasks.getTasks());
         return MESSAGE_ADDED + task;
     }
 

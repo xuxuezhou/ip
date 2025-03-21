@@ -1,12 +1,25 @@
 package jarvis.util;
 
-import jarvis.command.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
+import jarvis.command.AddCommand;
+import jarvis.command.Command;
+import jarvis.command.DeleteCommand;
+import jarvis.command.ExitCommand;
+import jarvis.command.FindCommand;
+import jarvis.command.ListCommand;
+import jarvis.command.MarkCommand;
+import jarvis.command.UnmarkCommand;
 import jarvis.exception.JarvisException;
 
 /**
  * Parses user input and returns corresponding Command objects or hardcoded responses.
  */
 public class Parser {
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
     /**
      * Parses the given user input and returns an appropriate Command or a hardcoded response.
      *
@@ -15,37 +28,11 @@ public class Parser {
      * @throws JarvisException If the input is invalid.
      */
     public static String parse(String userInput) throws JarvisException {
-        userInput = userInput.trim().toLowerCase();  // Convert to lowercase for case-insensitive matching
+        userInput = userInput.trim().toLowerCase();
 
         return switch (userInput) {
-            case "hello" -> "Hi!";
-//            case "what's your favorite food?" -> "Matcha!";
-//            case "who is your best friend?" -> "It's you! Xiongmao.";
-//            case "what's your research interest?" -> "I'm interested in magnetic fields!";
-//            case "could you explain maxwell's equation for me?" ->
-//                    "Sure. Maxwell's equations are four fundamental equations that describe classical electromagnetism. " +
-//                            "They explain how electric and magnetic fields interact with each other and with charges and currents. " +
-//                            "These equations unify electricity, magnetism, and optics into a single theory.";
-//            // Astronomy-related questions and answers
-//            case "what is the largest planet in our solar system?" ->
-//                    "Jupiter is the largest planet in our solar system.";
-//            case "how far is the sun from the earth?" ->
-//                    "On average, the Sun is about 93 million miles (150 million kilometers) away from Earth.";
-//            case "what is a black hole?" ->
-//                    "A black hole is a region of spacetime where gravity is so strong that nothing, not even light, can escape from it.";
-//            case "what is the milky way?" ->
-//                    "The Milky Way is the galaxy that contains our Solar System.";
-//            case "how many planets are in our solar system?" ->
-//                    "There are eight planets in our solar system.";
-//            case "what is the speed of light?" ->
-//                    "The speed of light in a vacuum is approximately 299,792 kilometers per second (about 186,282 miles per second).";
-//            case "what causes a solar eclipse?" ->
-//                    "A solar eclipse occurs when the Moon passes between the Earth and the Sun, blocking the Sun's light.";
-//            case "what is a supernova?" ->
-//                    "A supernova is a powerful and luminous stellar explosion that occurs during the last evolutionary stages of a massive star.";
-//            case "how old is the universe?" ->
-//                    "The universe is estimated to be around 13.8 billion years old.";
-            default -> null; // Not a hardcoded response, continue normal command parsing
+        case "hello" -> "Hi!";
+        default -> null;
         };
     }
 
@@ -61,33 +48,29 @@ public class Parser {
         String commandWord = parts[0];
 
         return switch (commandWord) {
-            case "bye" -> new ExitCommand();
-            case "list" -> new ListCommand();
-            case "mark" -> new MarkCommand(parseIndex(parts));
-            case "unmark" -> new UnmarkCommand(parseIndex(parts));
-            case "delete" -> new DeleteCommand(parseIndex(parts));
-            case "todo" -> new AddCommand(new jarvis.task.ToDo(parseTaskDescription(parts)));
-            case "deadline" -> {
-                String[] args = parseDeadline(parts);
-                yield new AddCommand(new jarvis.task.Deadline(args[0], args[1]));
-            }
-            case "event" -> {
-                String[] args = parseEvent(parts);
-                yield new AddCommand(new jarvis.task.Event(args[0], args[1], args[2]));
-            }
-//            case "chatGPT" -> {
-//                if (parts.length < 2 || parts[1].trim().isEmpty()) {
-//                    throw new JarvisException("Oops! Please provide a message to send to ChatGPT.");
-//                }
-//                yield new GPTCommand(parts[1], new ChatGPTService());
-//            }
-
-            default -> throw new JarvisException("I'm sorry, but I don't recognize this command: " + commandWord);
+        case "bye" -> new ExitCommand();
+        case "list" -> new ListCommand();
+        case "mark" -> new MarkCommand(parseIndex(parts));
+        case "unmark" -> new UnmarkCommand(parseIndex(parts));
+        case "delete" -> new DeleteCommand(parseIndex(parts));
+        case "find" -> new FindCommand(parts[1]);
+        case "todo" -> new AddCommand(new jarvis.task.ToDo(parseTaskDescription(parts)));
+        case "deadline" -> {
+            String[] args = parseDeadline(parts);
+            yield new AddCommand(new jarvis.task.Deadline(args[0], args[1]));
+        }
+        case "event" -> {
+            String[] args = parseEvent(parts);
+            yield new AddCommand(new jarvis.task.Event(args[0], args[1], args[2]));
+        }
+        default -> throw new JarvisException("I'm sorry, but I don't recognize this command: " + commandWord);
         };
     }
 
     private static int parseIndex(String[] parts) throws JarvisException {
-        if (parts.length < 2) throw new JarvisException("Please provide an index.");
+        if (parts.length < 2) {
+            throw new JarvisException("Please provide an index.");
+        }
         try {
             return Integer.parseInt(parts[1]) - 1;
         } catch (NumberFormatException e) {
@@ -103,12 +86,36 @@ public class Parser {
     }
 
     private static String[] parseDeadline(String[] parts) throws JarvisException {
-        if (parts.length < 2) throw new JarvisException("Invalid deadline format. Use: deadline <description> /by <date>");
-        return parts[1].split(" /by ", 2);
+        if (parts.length < 2 || !parts[1].contains(" /by ")) {
+            throw new JarvisException("Invalid deadline format. Use: deadline <description> /by <date>");
+        }
+        String[] args = parts[1].split(" /by ", 2);
+        if (args.length < 2) {
+            throw new JarvisException("Deadline must include a date after /by.");
+        }
+        validateDateTime(args[1].trim());
+        return args;
     }
 
     private static String[] parseEvent(String[] parts) throws JarvisException {
-        if (parts.length < 2) throw new JarvisException("Invalid event format. Use: event <description> /from <start> /to <end>");
-        return parts[1].split(" /from | /to ", 3);
+        if (parts.length < 2 || !parts[1].contains(" /from ") || !parts[1].contains(" /to ")) {
+            throw new JarvisException("Invalid event format. Use: event <description> /from <start> /to <end>");
+        }
+        String[] args = parts[1].split(" /from | /to ", 3);
+        if (args.length < 3) {
+            throw new JarvisException("Event must include start and end dates.");
+        }
+        validateDateTime(args[1].trim());
+        validateDateTime(args[2].trim());
+        return args;
+    }
+
+    private static void validateDateTime(String dateStr) throws JarvisException {
+        try {
+            LocalDateTime.parse(dateStr, DATE_TIME_FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new JarvisException(
+                "Invalid date format or non-existent date. Use: yyyy-MM-dd HH:mm (e.g., 2024-02-28 18:00)");
+        }
     }
 }

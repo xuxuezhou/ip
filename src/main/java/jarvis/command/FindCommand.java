@@ -1,11 +1,12 @@
 package jarvis.command;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import jarvis.task.Task;
 import jarvis.util.Storage;
 import jarvis.util.TaskList;
 import jarvis.util.Ui;
-import jarvis.task.Task;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Represents a command to find tasks based on a keyword.
@@ -30,9 +31,9 @@ public class FindCommand extends Command {
 
         return matchingTasks.isEmpty()
                 ? "No matching tasks found."
-                : "Here are the matching tasks in your list:\n" +
-                matchingTasks.stream()
-                        .map(task -> (tasks.getTasks().indexOf(task) + 1) + ". " + task)
-                        .collect(Collectors.joining("\n"));
+                : "Here are the matching tasks in your list:\n"
+                + matchingTasks.stream()
+                .map(task -> (tasks.getTasks().indexOf(task) + 1) + ". " + task)
+                .collect(Collectors.joining("\n"));
     }
 }

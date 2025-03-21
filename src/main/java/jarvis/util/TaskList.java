@@ -1,17 +1,18 @@
 package jarvis.util;
 
-import jarvis.task.Task;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import jarvis.task.Task;
 
 /**
  * Represents a list of tasks and provides methods for managing them.
  */
 public class TaskList {
     private final List<Task> tasks;
-    private final Set<String> taskSet; // Track unique task descriptions
+    private final Set<String> taskSet;
 
     /**
      * Initializes an empty TaskList.
@@ -42,7 +43,7 @@ public class TaskList {
      */
     public boolean addTask(Task task) {
         if (taskSet.contains(task.getDescription())) {
-            return false; // Task already exists
+            return false;
         }
         tasks.add(task);
         taskSet.add(task.getDescription());
@@ -54,7 +55,6 @@ public class TaskList {
      *
      * @param index The index of the task to be removed.
      * @return The removed task.
-     * @throws IndexOutOfBoundsException If the index is invalid.
      */
     public Task deleteTask(int index) {
         validateIndex(index);
@@ -88,7 +88,6 @@ public class TaskList {
      *
      * @param index The index of the task (0-based).
      * @return The task at the given index.
-     * @throws IndexOutOfBoundsException If the index is invalid.
      */
     public Task getTask(int index) {
         validateIndex(index);
@@ -110,14 +109,13 @@ public class TaskList {
      * @return A list of all tasks.
      */
     public List<Task> getTasks() {
-        return new ArrayList<>(tasks); // Return a copy to prevent modification from outside
+        return new ArrayList<>(tasks);
     }
 
     /**
      * Validates whether the given index is within bounds.
      *
      * @param index The index to check.
-     * @throws IndexOutOfBoundsException If the index is invalid.
      */
     private void validateIndex(int index) {
         if (index < 0 || index >= tasks.size()) {
@@ -125,11 +123,6 @@ public class TaskList {
         }
     }
 
-    /**
-     * Returns a formatted string representation of the task list.
-     *
-     * @return A string representation of the task list.
-     */
     @Override
     public String toString() {
         if (tasks.isEmpty()) {

@@ -1,22 +1,22 @@
 package jarvis.util;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
-import jarvis.task.Deadline;
-import jarvis.task.Event;
-import jarvis.task.Task;
-import jarvis.task.ToDo;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import jarvis.task.Deadline;
+import jarvis.task.Event;
+import jarvis.task.Task;
+import jarvis.task.ToDo;
 
 class StorageTest {
     private static final String TEST_FILE = "test_tasks.txt";

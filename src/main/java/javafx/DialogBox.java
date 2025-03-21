@@ -2,6 +2,7 @@ package javafx;
 
 import java.io.IOException;
 import java.util.Collections;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -20,10 +21,17 @@ import javafx.scene.shape.Circle;
  */
 public class DialogBox extends HBox {
     @FXML
-    private TextArea dialog;  // Changed from Label to TextArea
+    private TextArea dialog;
+
     @FXML
     private ImageView displayPicture;
 
+    /**
+     * Constructs a DialogBox with specified text and image.
+     *
+     * @param text The text to display.
+     * @param img  The image to display.
+     */
     public DialogBox(String text, Image img) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/view/DialogBox.fxml"));
@@ -36,14 +44,18 @@ public class DialogBox extends HBox {
 
         dialog.setText(text);
         dialog.setWrapText(true);
-        dialog.setEditable(false);  // Prevent user from editing the response
-        dialog.setPrefWidth(350);  // Adjust width to prevent truncation
+        dialog.setEditable(false);
+        dialog.setPrefWidth(350);
+
         displayPicture.setImage(img);
-        displayPicture.setClip(new Circle(45, 45, 45)); // Make image circular
+        displayPicture.setClip(new Circle(45, 45, 45));
 
         setAlignment(Pos.TOP_RIGHT);
     }
 
+    /**
+     * Flips the dialog box such that the ImageView is on the left and text on the right.
+     */
     private void flip() {
         ObservableList<Node> tmp = FXCollections.observableArrayList(this.getChildren());
         Collections.reverse(tmp);
@@ -51,12 +63,26 @@ public class DialogBox extends HBox {
         setAlignment(Pos.TOP_LEFT);
     }
 
+    /**
+     * Returns a DialogBox for Jarvis (flipped).
+     *
+     * @param text The text to display.
+     * @param img  The image to display.
+     * @return DialogBox instance for Jarvis.
+     */
     public static DialogBox getJarvisDialog(String text, Image img) {
         DialogBox db = new DialogBox(text, img);
         db.flip();
         return db;
     }
 
+    /**
+     * Returns a DialogBox for the user.
+     *
+     * @param text The text to display.
+     * @param img  The image to display.
+     * @return DialogBox instance for user.
+     */
     public static DialogBox getUserDialog(String text, Image img) {
         return new DialogBox(text, img);
     }

@@ -32,12 +32,21 @@ public abstract class Task {
     }
 
     /**
+     * Checks whether the task is marked as done.
+     *
+     * @return true if the task is done, false otherwise.
+     */
+    public boolean isDone() {
+        return isDone;
+    }
+
+    /**
      * Gets the status icon of the task.
      *
      * @return "X" if the task is completed, otherwise a space.
      */
     public String getStatusIcon() {
-        return (isDone ? "X" : " ");
+        return isDone ? "X" : " ";
     }
 
     /**

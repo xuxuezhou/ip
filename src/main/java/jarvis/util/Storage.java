@@ -1,14 +1,20 @@
 package jarvis.util;
 
-import jarvis.task.Task;
-import jarvis.task.ToDo;
-import jarvis.task.Deadline;
-import jarvis.task.Event;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import jarvis.task.Deadline;
+import jarvis.task.Event;
+import jarvis.task.Task;
+import jarvis.task.ToDo;
 
 /**
  * Handles loading and saving tasks from/to a file.
@@ -36,7 +42,6 @@ public class Storage {
         Set<String> taskSet = new HashSet<>();
         File file = new File(filePath);
 
-        // 如果文件不存在，直接返回空列表，不创建新文件
         if (!file.exists()) {
             return tasks;
         }
@@ -48,15 +53,18 @@ public class Storage {
                 Task task = null;
 
                 switch (parts[0]) {
-                    case "T":
-                        task = new ToDo(parts[2]);
-                        break;
-                    case "D":
-                        task = new Deadline(parts[2], parts[3]);
-                        break;
-                    case "E":
-                        task = new Event(parts[2], parts[3], parts[4]);
-                        break;
+                case "T":
+                    task = new ToDo(parts[2]);
+                    break;
+                case "D":
+                    task = new Deadline(parts[2], parts[3]);
+                    break;
+                case "E":
+                    task = new Event(parts[2], parts[3], parts[4]);
+                    break;
+                default:
+                    // Skip unknown task type
+                    continue;
                 }
 
                 if (task != null && !taskSet.contains(task.getDescription())) {
@@ -68,6 +76,7 @@ public class Storage {
                 }
             }
         }
+
         return tasks;
     }
 
@@ -79,15 +88,16 @@ public class Storage {
      */
     public void save(List<Task> tasks) throws IOException {
         File file = new File(filePath);
-
-        // 仅当文件已存在时才执行写入
-        if (!file.exists()) {
-            return;
+        File parentDir = file.getParentFile();
+        if (parentDir != null) {
+            parentDir.mkdirs();
         }
+        file.createNewFile();
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             for (Task task : tasks) {
-                writer.write(task.toFileFormat() + "\n");
+                writer.write(task.toFileFormat());
+                writer.newLine();
             }
         }
     }

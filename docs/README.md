@@ -78,11 +78,6 @@ I'm sorry, but I don't recognize this command.
 ```
 Ensure your command format follows the correct structure.
 
-## Talk to AI!
-Jarvis supports the feature to GPT.
-- Command: `chatGPT`
-- Expected outcome: `The conversation will be handled by AI from now...`
-
 ## Run the Jar file
 - Command: `java -jar Jarvis.jar`
 ## Notes
