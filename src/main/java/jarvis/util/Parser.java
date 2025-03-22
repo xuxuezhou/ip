@@ -1,9 +1,5 @@
 package jarvis.util;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-
 import jarvis.command.AddCommand;
 import jarvis.command.Command;
 import jarvis.command.DeleteCommand;
@@ -18,8 +14,6 @@ import jarvis.exception.JarvisException;
  * Parses user input and returns corresponding Command objects or hardcoded responses.
  */
 public class Parser {
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
     /**
      * Parses the given user input and returns an appropriate Command or a hardcoded response.
      *
@@ -89,33 +83,13 @@ public class Parser {
         if (parts.length < 2 || !parts[1].contains(" /by ")) {
             throw new JarvisException("Invalid deadline format. Use: deadline <description> /by <date>");
         }
-        String[] args = parts[1].split(" /by ", 2);
-        if (args.length < 2) {
-            throw new JarvisException("Deadline must include a date after /by.");
-        }
-        validateDateTime(args[1].trim());
-        return args;
+        return parts[1].split(" /by ", 2);
     }
 
     private static String[] parseEvent(String[] parts) throws JarvisException {
         if (parts.length < 2 || !parts[1].contains(" /from ") || !parts[1].contains(" /to ")) {
             throw new JarvisException("Invalid event format. Use: event <description> /from <start> /to <end>");
         }
-        String[] args = parts[1].split(" /from | /to ", 3);
-        if (args.length < 3) {
-            throw new JarvisException("Event must include start and end dates.");
-        }
-        validateDateTime(args[1].trim());
-        validateDateTime(args[2].trim());
-        return args;
-    }
-
-    private static void validateDateTime(String dateStr) throws JarvisException {
-        try {
-            LocalDateTime.parse(dateStr, DATE_TIME_FORMATTER);
-        } catch (DateTimeParseException e) {
-            throw new JarvisException(
-                "Invalid date format or non-existent date. Use: yyyy-MM-dd HH:mm (e.g., 2024-02-28 18:00)");
-        }
+        return parts[1].split(" /from | /to ", 3);
     }
 }

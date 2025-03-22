@@ -1,5 +1,5 @@
 T | 0 | buy mild
-T | 0 | buy milk
+T | 1 | buy milk
 T | 0 | finish homework
 T | 0 | call mom
 D | 0 | submit report | 2024-12-10
@@ -11,3 +11,5 @@ E | 0 | vacation | 2024-12-20 | 2025-01-05
 T | 0 | drink milk
 E | 0 | meeting | 2024-12-01 14:00 | 2024-12-01 16:00
 D | 0 | project | 2024-11-01 18:00
+D | 0 | Finish report | Monday
+E | 0 | Team meeting | 2pm | 4pm
